@@ -1,0 +1,6 @@
+*.tar.gz
+*.bak
+Spinelfile.lock
+/build/
+/tmp/
+/vendor/

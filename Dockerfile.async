@@ -1,0 +1,30 @@
+# syntax=docker/dockerfile:1.7
+
+FROM ruby:3.3-slim AS builder
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      build-essential git curl ca-certificates make \
+      libssl-dev libsqlite3-dev zlib1g-dev libcrypt-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt
+RUN git clone --depth 1 https://github.com/matz/spinel.git
+WORKDIR /opt/spinel
+RUN make deps && make -j"$(nproc)"
+
+COPY helper.c /opt/spinel-helper/helper.c
+RUN cc -O2 -c /opt/spinel-helper/helper.c -o /opt/spinel-helper/helper.o \
+ && ar rcs /opt/spinel-helper/libspinelhelper.a /opt/spinel-helper/helper.o
+
+COPY web /opt/spinel/web
+COPY httpd_async.rb /opt/spinel/httpd_async.rb
+RUN ./spinel httpd_async.rb -o /opt/httpd_async
+
+FROM debian:bookworm-slim
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libssl3 libsqlite3-0 zlib1g libcrypt1 \
+    && rm -rf /var/lib/apt/lists/*
+COPY --from=builder /opt/httpd_async /usr/local/bin/httpd_async
+COPY www /srv/www
+WORKDIR /srv/www
+EXPOSE 8080
+CMD ["/usr/local/bin/httpd_async"]
