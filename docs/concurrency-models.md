@@ -99,7 +99,7 @@ Spinel は AOT で **「ランタイム透明性 + 22 KB バイナリ」** を�
 
 - スケジューラ + epoll ループ + preempt → **+数 MB**
 - 一気に Go と同じ重さ。差別化が消える。
-- matz の哲学 (mruby 系の軽さ) に反する。
+- Spinel の「軽さ」設計に反する。
 
 → Spinel が goroutine 風を採るのは合理的でない。
 
@@ -152,7 +152,7 @@ async/await は中間解として歴史的役割を終えつつある、とい�
 
 1. **Fiber Scheduler API 実装** — epoll/kqueue ラッパ + accept/recv/send/read/write を Fiber.yield 可にする。Ruby 3 の API シグネチャを真似ればコミュニティ資産が流用できる。
 2. **process fork による CPU 並列** — `fork()` + SO_REUSEPORT で複数プロセスが同じポートを listen。nginx 方式。Caddy ではない (後述)。
-3. **goroutine 風は採らない** — 哲学に反するし matz もそういうランタイムを書かない。
+3. **goroutine 風は採らない** — Spinel の軽量設計に反する。
 
 ---
 
@@ -222,7 +222,7 @@ Caddy (1 プロセス)
 |---|---|
 | Fiber + epoll **シングル**プロセス | I/O 並行 OK、CPU 並列なし。c=100 の I/O bound では十分 |
 | **prefork + Fiber + epoll** = nginx 方式 | CPU 並列も取れるが上記欠点 8 個を背負う |
-| goroutine 風ランタイム自作 | 22KB の売りが消える、matz 哲学に反する |
+| goroutine 風ランタイム自作 | 22KB の売りが消える、Spinel の軽量設計に反する |
 
 **Spinel の落としどころ**: **Caddy にはなれない**（goroutine が無いから）。
 **「Ruby で書ける mini-nginx」** にはなれる。それがこの言語の射程。

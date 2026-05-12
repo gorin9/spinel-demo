@@ -106,19 +106,19 @@ end
 PORT = "8080"
 ROOT = "."
 
-require_relative "web/date"
-require_relative "web/logger"
-require_relative "web/session"
-require_relative "web/mime"
-require_relative "web/multipart"
-require_relative "web/csrf"
-require_relative "web/bcrypt"
-require_relative "web/websocket"
-require_relative "web/smtp"
-require_relative "web/tls"
+require_relative "vendor/gorin9__spnl-web/web/date"
+require_relative "vendor/gorin9__spnl-web/web/logger"
+require_relative "vendor/gorin9__spnl-web/web/session"
+require_relative "vendor/gorin9__spnl-web/web/mime"
+require_relative "vendor/gorin9__spnl-web/web/multipart"
+require_relative "vendor/gorin9__spnl-web/web/csrf"
+require_relative "vendor/gorin9__spnl-web/web/bcrypt"
+require_relative "vendor/gorin9__spnl-web/web/websocket"
+require_relative "vendor/gorin9__spnl-web/web/smtp"
+require_relative "vendor/gorin9__spnl-web/web/tls"
 
 # Fiber wrapper for obj_*_ptr_array typing.
-require_relative "web/scheduler"
+require_relative "vendor/gorin9__spnl-web/web/scheduler"
 
 # 静的ファイルキャッシュ — トップレベル定数で持つ。
 INDEX_HTML = File.exist?(ROOT + "/index.html") ? File.read(ROOT + "/index.html") : ""

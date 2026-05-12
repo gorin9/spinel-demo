@@ -1,6 +1,5 @@
 *.tar.gz
 *.bak
-Spinelfile.lock
 /build/
 /tmp/
-/vendor/
+# vendor/ と Spinelfile.lock はコミット推奨 (spec 準拠) のため除外しない

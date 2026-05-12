@@ -15,8 +15,8 @@ COPY helper.c /opt/spinel-helper/helper.c
 RUN cc -O2 -c /opt/spinel-helper/helper.c -o /opt/spinel-helper/helper.o \
  && ar rcs /opt/spinel-helper/libspinelhelper.a /opt/spinel-helper/helper.o
 
-COPY web /opt/spinel/web
-COPY httpd_async.rb /opt/spinel/httpd_async.rb
+COPY vendor /opt/spinel/vendor
+COPY httpd_async.rb Spinelfile Spinelfile.lock /opt/spinel/
 RUN ./spinel httpd_async.rb -o /opt/httpd_async
 
 FROM debian:bookworm-slim

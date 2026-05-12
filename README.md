@@ -18,8 +18,37 @@ Go の `net/http` を全並行レベルで上回るスループットを単一�
 
 ## 関連プロジェクト
 
-- [gorin9/spinel-packer](https://github.com/gorin9/spinel-packer) — 本 demo の依存管理ツール (vendor / lock / pack)
+- [gorin9/spnl-web](https://github.com/gorin9/spnl-web) — Web ライブラリ群 (本 demo で vendor 経由で使用)
+- [gorin9/spinel-packer](https://github.com/gorin9/spinel-packer) — 依存管理 CLI (vendor / lock / pack)
 - [matz/spinel](https://github.com/matz/spinel) — 本家 Spinel コンパイラ
+
+## エコシステム実戦使用例
+
+本 repo は **spinel-packer + spnl-web の実用デモ** でもある。
+
+```
+Spinelfile      # use "gorin9/spnl-web", sha: "49cd5eb..."
+Spinelfile.lock # spinel-packer lock で生成、tree_sha256 で改ざん検出
+vendor/         # spinel-packer vendor で展開、コミット推奨
+  gorin9__spnl-web/
+    .spnl-source     # 取得元・SHA 記録
+    web/*.rb         # 11 modules
+```
+
+依存を更新する場合:
+```sh
+# Spinelfile の sha: を新しい値に書き換える
+$ spinel-packer vendor    # vendor/ を更新
+$ spinel-packer lock      # Spinelfile.lock を更新
+$ git diff vendor/        # 何が変わったか確認
+$ git commit -am "bump spnl-web to <new-sha>"
+```
+
+CI で改ざん検証:
+```sh
+$ spinel-packer lock --check
+OK: vendor/ は Spinelfile.lock と一致 (1 deps)
+```
 
 ## クイックスタート
 

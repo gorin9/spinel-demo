@@ -1,6 +1,6 @@
 # Spinel で簡易 HTTP サーバーを書く
 
-matz の Ruby AOT コンパイラ [matz/spinel](https://github.com/matz/spinel)
+Ruby AOT コンパイラ [matz/spinel](https://github.com/matz/spinel)
 で `python -m http.server` 相当の静的ファイルサーバーを書き、Go と
 比較した記録。
 

@@ -45,7 +45,7 @@ SO_REUSEPORT (nginx 方式)。
 
 ## 実装で踏んだ Spinel の制約 (重要)
 
-これらは未来の Spinel 利用者・matz 本人へのフィードバックとして記録。
+これらは未来の Spinel 利用者・upstream への候補としてのフィードバックとして記録。
 
 ### 1. ヘッダ衝突: stdio/unistd 系の関数を ffi_func で再宣言できない
 
@@ -715,7 +715,7 @@ end
 
 - helper.c: **40 行減** (date 系 50 行 + sp_recv_str 10 行)
 - httpd_async.rb: **30 行増** (WDAY/MON 名前 + pad2/pad4 + 3 formatter)
-- net: **C 縮小、Ruby 拡大、format string が言語レベルで見える** (matz が PR レビューしやすい)
+- net: **C 縮小、Ruby 拡大、format string が言語レベルで見える** (upstream に提案しやすい)
 
 ### Phase 2 の判断基準
 
@@ -825,7 +825,7 @@ httpd_async が使ってる `web/*.rb` は他の Spinel ユーザにも有用:
 - `web/logger.rb` (20 行) — JSON Lines
 
 = 合計 177 行で **「Spinel で Sinatra 風 web 開発」の標準パーツ群** が揃う。  
-matz/spinel リポジトリの `lib/web/*.rb` として PR する筋。  
+matz/spinel リポジトリ (upstream) の `lib/web/*.rb` として PR する筋。  
 並行セッションの `lib/json.rb` `lib/url.rb` と合わせれば **400 行未満で Web フレームワーク基盤**。
 
 ### 全エンドポイント一覧 (httpd_async 最終版)

@@ -1,8 +1,5 @@
 # Spinelfile — spinel-demo の依存マニフェスト (v0.1 spec)
-#
-# 現状の web/*.rb は in-tree。将来別 repo に切り出した時は use 行で取得。
 
 spinel "0.1"
 
-# 例 (今はコメントアウト): web/ を別 repo に分離した想定
-# use "gorin9/spnl-web", sha: "0000000000000000000000000000000000000000"
+use "gorin9/spnl-web", sha: "49cd5ebf1e9662ff28d08ee5241753cc4d6f0ba8"
