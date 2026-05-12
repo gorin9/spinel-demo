@@ -24,30 +24,50 @@ Go の `net/http` を全並行レベルで上回るスループットを単一�
 
 ## エコシステム実戦使用例
 
-本 repo は **spinel-packer + spnl-web の実用デモ** でもある。
+本 repo は **spinel-packer + spnl-web の実用デモ**:
 
 ```
-Spinelfile      # use "gorin9/spnl-web", sha: "49cd5eb..."
-Spinelfile.lock # spinel-packer lock で生成、tree_sha256 で改ざん検出
-vendor/         # spinel-packer vendor で展開、コミット推奨
+Spinelfile         # use "gorin9/spnl-web", sha: "49cd5eb..."
+Spinelfile.lock    # spinel-packer install / lock で生成、tree_sha256 で改ざん検出
+.gitignore         # /vendor/ を ignore (ローカル生成、commit しない)
+vendor/            # spinel-packer install で復元される (gitignore 対象)
   gorin9__spnl-web/
-    .spnl-source     # 取得元・SHA 記録
-    web/*.rb         # 11 modules
+    .spnl-source   # 取得元・SHA 記録
+    web/*.rb       # 11 modules
+    README.md, LICENSE...
 ```
 
-依存を更新する場合:
+### clone 後の build フロー (利用者)
+
 ```sh
-# Spinelfile の sha: を新しい値に書き換える
-$ spinel-packer vendor    # vendor/ を更新
-$ spinel-packer lock      # Spinelfile.lock を更新
-$ git diff vendor/        # 何が変わったか確認
-$ git commit -am "bump spnl-web to <new-sha>"
+git clone https://github.com/gorin9/spinel-demo
+cd spinel-demo
+spinel-packer install      # Spinelfile.lock から vendor/ を厳密復元
+spinel httpd_async.rb -o httpd_async
+./httpd_async
 ```
 
-CI で改ざん検証:
+Docker なら 1 コマンド (内部で `spinel-packer install` 実行):
 ```sh
-$ spinel-packer lock --check
-OK: vendor/ は Spinelfile.lock と一致 (1 deps)
+docker build -f Dockerfile.async -t demo .
+docker run -p 8082:8080 demo
+```
+
+### 依存更新フロー (メンテナ)
+
+```sh
+spinel-packer upgrade gorin9/spnl-web        # main の最新へ
+# or
+spinel-packer upgrade gorin9/spnl-web@v2.0   # 特定 tag へ
+
+git diff Spinelfile Spinelfile.lock          # 変更確認
+git commit -am "bump spnl-web"
+```
+
+### CI 検証
+```sh
+spinel-packer install   # lock 通り復元 (drift で exit 1)
+spinel-packer check     # 念のため一致確認
 ```
 
 ## クイックスタート

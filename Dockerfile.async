@@ -15,8 +15,13 @@ COPY helper.c /opt/spinel-helper/helper.c
 RUN cc -O2 -c /opt/spinel-helper/helper.c -o /opt/spinel-helper/helper.o \
  && ar rcs /opt/spinel-helper/libspinelhelper.a /opt/spinel-helper/helper.o
 
-COPY vendor /opt/spinel/vendor
-COPY httpd_async.rb Spinelfile Spinelfile.lock /opt/spinel/
+# spinel-packer を取得して vendor/ を Spinelfile.lock から復元
+RUN git clone --depth 1 https://github.com/gorin9/spinel-packer.git /opt/spinel-packer
+COPY Spinelfile Spinelfile.lock /opt/spinel/
+WORKDIR /opt/spinel
+RUN /opt/spinel-packer/spinel-packer install
+
+COPY httpd_async.rb /opt/spinel/
 RUN ./spinel httpd_async.rb -o /opt/httpd_async
 
 FROM debian:bookworm-slim

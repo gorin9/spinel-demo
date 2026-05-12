@@ -2,4 +2,5 @@
 *.bak
 /build/
 /tmp/
-# vendor/ と Spinelfile.lock はコミット推奨 (spec 準拠) のため除外しない
+# vendor/ は spinel-packer install で再現できるのでコミットしない
+/vendor/
