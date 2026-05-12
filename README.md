@@ -18,9 +18,20 @@ Go の `net/http` を全並行レベルで上回るスループットを単一�
 
 ## 関連プロジェクト
 
-- [gorin9/spnl-web](https://github.com/gorin9/spnl-web) — Web ライブラリ群 (本 demo で vendor 経由で使用)
-- [gorin9/spinel-packer](https://github.com/gorin9/spinel-packer) — 依存管理 CLI (vendor / lock / pack)
+- [gorin9/spnl-web](https://github.com/gorin9/spnl-web) — Web ライブラリ群 (本 demo で `spinel-packer install` 経由で使用)
+- [gorin9/spinel-packer](https://github.com/gorin9/spinel-packer) — 依存管理 CLI (install / upgrade / lock / check / pack)
 - [matz/spinel](https://github.com/matz/spinel) — 本家 Spinel コンパイラ
+
+### ライブラリ粒度の方針
+
+本エコシステムは **「関連機能は 1 repo にまとめる bundle 派」**。
+`spnl-web` 内に 11 module を集約しているのもこの方針。
+
+理由:
+- Spinel の dead-code-elimination で **未使用 module はバイナリに入らない**
+- NPM の left-pad 問題回避 (1 機能 1 repo は避ける)
+- **「標準ライブラリ補充まで」の暫定置き場**として運用しやすい
+- 詳細: [spinel-packer の命名指針](https://github.com/gorin9/spinel-packer#ライブラリ命名粒度の指針-推奨)
 
 ## エコシステム実戦使用例
 
