@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Users — spnl-erb demo</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2em auto; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { padding: 8px 12px; border-bottom: 1px solid #ddd; text-align: left; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; }
+    .admin { background: #d33; color: white; }
+    .user  { background: #888; color: white; }
+  </style>
+</head>
+<body>
+  <h1>Users (<%= @users.length %>)</h1>
+
+  <% if @users.length == 0 -%>
+  <p>No users.</p>
+  <% else -%>
+  <table>
+    <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Role</th></tr></thead>
+    <tbody>
+<% i = 0 -%>
+<% @users.each do |u| -%>
+<%   i = i + 1 -%>
+      <tr>
+        <td><%= i %></td>
+        <td><%= u.display_name %></td>
+        <td><%= u.email %></td>
+        <td>
+          <% if u.admin? -%>
+          <span class="badge admin">admin</span>
+          <% else -%>
+          <span class="badge user">user</span>
+          <% end -%>
+        </td>
+      </tr>
+<% end -%>
+    </tbody>
+  </table>
+  <% end -%>
+
+  <p><small>Rendered at <%= @rendered_at %> by spnl-erb + Spinel AOT.</small></p>
+</body>
+</html>

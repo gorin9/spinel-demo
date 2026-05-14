@@ -1,0 +1,24 @@
+<section>
+  <h1>Users (<%= @users.length %>)</h1>
+  <table>
+    <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Role</th></tr></thead>
+    <tbody>
+<% i = 0 -%>
+<% @users.each do |u| -%>
+<%   i = i + 1 -%>
+      <tr>
+        <td><%= i %></td>
+        <td><%= u.display_name %></td>
+        <td><%= u.email %></td>
+        <td>
+<%        if u.admin? -%>
+          <span class="badge admin">admin</span>
+<%        else -%>
+          <span class="badge user">user</span>
+<%        end -%>
+        </td>
+      </tr>
+<% end -%>
+    </tbody>
+  </table>
+</section>

@@ -106,6 +106,7 @@ curl http://localhost:8082/users
 | `/` | index.html (cache + MIME) | 1 |
 | `/about.html`, `/style.css`, `/app.js` | 静的ファイル | 1 / 2 #8 |
 | `/users` | SQLite SELECT (JSON) | 2 #7 |
+| `/users.html` | **spnl-erb + View+Model 実例 (HTML 表)** | demo |
 | `/upload` (POST) | multipart/form-data + SHA-256 | 2 #9 |
 | `/session` | HMAC 署名 cookie ログイン | 2 #10 |
 | `/now` | 4 形式の現在時刻 | 2 #12 |
@@ -119,6 +120,36 @@ curl http://localhost:8082/users
 | `/tls-demo` | TLS init (PEM ファイル必要) | 3 #13 |
 
 全リクエストは **JSON Lines** 形式の access log として stderr 出力 (Tier 2 #11)。
+
+## View + Model パイプライン例 (`/users.html`)
+
+`spnl-erb` (ERB→Ruby 変換) と `spnl-schema` (SQL→Model 変換) の思想を実演:
+
+```
+db/schema.sql                                                     ┐
+  ↓ spnl-schema (CRuby, ビルド時)                                 │ Rails-like
+app/models/user.generated.rb  ←── 人が書く app/models/user.rb       │ DX
+                                                                   │
+views/users_index.html.erb                                         │
+  ↓ spnl-erb (CRuby, ビルド時)                                    │
+views/users_index.html.generated.rb                                ┘
+  ↓ require_relative
+httpd_async.rb (Spinel AOT compile)
+  ↓
+bin/httpd_async  → GET /users.html → HTML 200 OK
+```
+
+ビルド手順:
+```sh
+ruby ~/spnl-erb/bin/spnl-erb --batch views/
+spinel httpd_async.rb -o bin/httpd_async
+./bin/httpd_async &
+curl http://localhost:8080/users.html
+```
+
+User クラスは `app/models/user.rb` で `display_name` `admin?` 等の business logic
+だけを定義し, `.generated.rb` (attr_accessor + initialize) と `class` で reopen
+される (open class が file 間を跨ぐことを検証済).
 
 ## ファイル構成
 

@@ -1,5 +1,17 @@
 # Spinel async HTTP server: Fiber + epoll, single-threaded non-blocking.
 
+# View + Model + Router 実例 (spnl-erb / spnl-router / spnl-schema 思想).
+# user.rb は人が書く POJO. *.generated.rb はビルド時生成.
+require_relative "app/models/user"
+require_relative "views/users_index.html.generated"
+
+# Controller + Router 統合: /site/* は SiteRouter.dispatch に委譲.
+require_relative "app/site_controller"
+require_relative "views/site/layout.html.generated"
+require_relative "views/site/home.html.generated"
+require_relative "views/site/users.html.generated"
+require_relative "app/site_router.generated"
+
 module C
   ffi_func :socket,       [:int, :int, :int],          :int
   ffi_func :bind,         [:int, :ptr, :uint32],       :int
@@ -317,6 +329,27 @@ def serve(cfd)
       elsif path == "/upload"
         serve_upload(cfd, s, want_close)
         alive = false   # POST 後は keep-alive せず閉じる (簡易版)
+      elsif path == "/users.html"
+        # 旧実装: 手書き UsersIndexView. 比較のため残す.
+        users = []
+        users.push(User.new(1, "alice@example.com",      "Alice"))
+        users.push(User.new(2, "bob@example.com",        "Bob"))
+        users.push(User.new(3, "root@admin.example.com", "Root"))
+        html = UsersIndexView.new(users, iso_now).render
+        respond_v11(cfd, "200 OK", "text/html; charset=utf-8", html, want_close)
+        alive = false if want_close
+      elsif path.start_with?("/site/")
+        # 新実装: Controller + Router + ERB の全部入り (spnl-router 生成).
+        # /site/ を strip して SiteRouter.dispatch に委譲.
+        sub_path = path[5, path.length]   # "/site/users" → "/users", "/site/" → "/"
+        sub_path = "/" if sub_path == ""
+        html = SiteRouter.dispatch(sub_path)
+        if html == "404"
+          respond_v11(cfd, "404 Not Found", "text/plain", "404\n", want_close)
+        else
+          respond_v11(cfd, "200 OK", "text/html; charset=utf-8", html, want_close)
+        end
+        alive = false if want_close
       elsif path == "/users"
         serve_users(cfd, want_close)
         alive = false if want_close

@@ -1,0 +1,15 @@
+<section>
+  <h1><%= @page_title %></h1>
+  <p><%= @message %></p>
+
+  <h2>Try the routes</h2>
+  <ul>
+    <li><a href="/site/">/site/</a> — このページ</li>
+    <li><a href="/site/users">/site/users</a> — User 一覧 (View+Model 実例)</li>
+  </ul>
+
+  <h2>How it's wired</h2>
+  <p>HTTP request <code>/site/...</code> が来ると httpd_async.rb は <code>SiteRouter.dispatch</code> に委譲.
+  生成された dispatcher は static <code>case/when</code> で action method を呼び, set_chrome + render_layout で wrap.
+  すべて AOT compile 後の単一バイナリ.</p>
+</section>

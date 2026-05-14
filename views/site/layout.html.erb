@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%= @page_title %> — <%= @site_name %></title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2em auto; padding: 0 1em; line-height: 1.6; color: #222; }
+    nav { display: flex; gap: 1.5em; padding-bottom: 1em; border-bottom: 2px solid #333; margin-bottom: 1.5em; }
+    nav a { color: #07c; text-decoration: none; font-weight: 600; }
+    nav a.active { color: #c33; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { padding: 8px 12px; border-bottom: 1px solid #ddd; text-align: left; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; }
+    .admin { background: #d33; color: white; }
+    .user  { background: #888; color: white; }
+    footer { margin-top: 3em; padding-top: 1em; border-top: 1px solid #ddd; color: #888; font-size: 0.85em; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/site/" class="<%= @active_nav == "home" ? "active" : "" %>">Home</a>
+    <a href="/site/users" class="<%= @active_nav == "users" ? "active" : "" %>">Users</a>
+  </nav>
+
+  <%= @content %>
+
+  <footer>
+    <p>© <%= @year %> <%= @site_name %> · <%= @site_tagline %></p>
+    <p>Routed by spnl-router · Rendered by spnl-erb · Compiled by Spinel</p>
+  </footer>
+</body>
+</html>
