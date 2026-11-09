@@ -1,0 +1,9 @@
+[package]
+name = "spinel_demo"
+version = "0.2.0"
+exclude = ["legacy"]
+
+[dependencies]
+spnl_utils = { git = "https://github.com/gorin9/spnl-utils.git", ref = "modernize-spinel-2026" }
+spnl_web = { git = "https://github.com/gorin9/spnl-web.git", ref = "modernize-spinel-2026" }
+spnl_schema = { git = "https://github.com/gorin9/spnl-schema.git", ref = "modernize-spinel-2026" }

@@ -1,0 +1,2 @@
+# Generated ERB retains the standard compiler's source whitespace.
+*.generated.rb whitespace=-blank-at-eol

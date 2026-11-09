@@ -4,3 +4,10 @@
 /tmp/
 # vendor/ は spinel-packer install で再現できるのでコミットしない
 /vendor/
+
+/.bundle/
+/*.gem
+/Gemfile.lock
+
+/*.sqlite3*
+/benchmark-results.json

@@ -1,3 +1,5 @@
+> Historical May 2026 implementation notes. Current behavior is documented in README; source is archived under legacy/.
+
 # Spinel に Fiber + epoll を実装してみた記録
 
 `docs/spinel-httpd.md` で作った同期版 (シングルスレッド逐次 accept) は

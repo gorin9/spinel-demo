@@ -1,0 +1,175 @@
+{
+  "platform": "Linux-6.12.90+deb13.1-amd64-x86_64-with-glibc2.36",
+  "server_cpus": [
+    0,
+    1
+  ],
+  "client_cpus": [
+    2,
+    3
+  ],
+  "spinel_workers": 3,
+  "go_maxprocs": 2,
+  "requests_per_run": 5000,
+  "connection_policy": "close",
+  "payload": "spinel benchmark\\n",
+  "results": [
+    {
+      "server": "spinel",
+      "concurrency": 1,
+      "trial": 1,
+      "rps": 11703.0,
+      "raw": "requests : 5000 ok / 0 fail in 427ms\nrps      : 11703\nlatency  : p50=82\u00b5s p90=98\u00b5s p99=173\u00b5s max=375\u00b5s\n",
+      "rss_after_runs": "16128 kB"
+    },
+    {
+      "server": "spinel",
+      "concurrency": 1,
+      "trial": 2,
+      "rps": 11691.0,
+      "raw": "requests : 5000 ok / 0 fail in 428ms\nrps      : 11691\nlatency  : p50=82\u00b5s p90=97\u00b5s p99=179\u00b5s max=355\u00b5s\n",
+      "rss_after_runs": "16128 kB"
+    },
+    {
+      "server": "spinel",
+      "concurrency": 1,
+      "trial": 3,
+      "rps": 11709.0,
+      "raw": "requests : 5000 ok / 0 fail in 427ms\nrps      : 11709\nlatency  : p50=82\u00b5s p90=98\u00b5s p99=175\u00b5s max=452\u00b5s\n",
+      "rss_after_runs": "16128 kB"
+    },
+    {
+      "server": "spinel",
+      "concurrency": 10,
+      "trial": 1,
+      "rps": 23693.0,
+      "raw": "requests : 5000 ok / 0 fail in 211ms\nrps      : 23693\nlatency  : p50=350\u00b5s p90=582\u00b5s p99=2.409ms max=6.271ms\n",
+      "rss_after_runs": "16128 kB"
+    },
+    {
+      "server": "spinel",
+      "concurrency": 10,
+      "trial": 2,
+      "rps": 23050.0,
+      "raw": "requests : 5000 ok / 0 fail in 217ms\nrps      : 23050\nlatency  : p50=343\u00b5s p90=584\u00b5s p99=4.182ms max=6.841ms\n",
+      "rss_after_runs": "16128 kB"
+    },
+    {
+      "server": "spinel",
+      "concurrency": 10,
+      "trial": 3,
+      "rps": 23383.0,
+      "raw": "requests : 5000 ok / 0 fail in 214ms\nrps      : 23383\nlatency  : p50=345\u00b5s p90=576\u00b5s p99=2.696ms max=6.559ms\n",
+      "rss_after_runs": "16128 kB"
+    },
+    {
+      "server": "spinel",
+      "concurrency": 50,
+      "trial": 1,
+      "rps": 23526.0,
+      "raw": "requests : 5000 ok / 0 fail in 213ms\nrps      : 23526\nlatency  : p50=1.425ms p90=2.736ms p99=9.148ms max=47.298ms\n",
+      "rss_after_runs": "16128 kB"
+    },
+    {
+      "server": "spinel",
+      "concurrency": 50,
+      "trial": 2,
+      "rps": 26830.0,
+      "raw": "requests : 5000 ok / 0 fail in 186ms\nrps      : 26830\nlatency  : p50=1.466ms p90=2.877ms p99=9.05ms max=13.82ms\n",
+      "rss_after_runs": "16128 kB"
+    },
+    {
+      "server": "spinel",
+      "concurrency": 50,
+      "trial": 3,
+      "rps": 30699.0,
+      "raw": "requests : 5000 ok / 0 fail in 163ms\nrps      : 30699\nlatency  : p50=1.392ms p90=2.366ms p99=6.701ms max=8.133ms\n",
+      "rss_after_runs": "16128 kB"
+    },
+    {
+      "server": "go",
+      "concurrency": 1,
+      "trial": 1,
+      "rps": 12240.0,
+      "raw": "requests : 5000 ok / 0 fail in 408ms\nrps      : 12240\nlatency  : p50=79\u00b5s p90=92\u00b5s p99=154\u00b5s max=384\u00b5s\n",
+      "rss_after_runs": "12256 kB"
+    },
+    {
+      "server": "go",
+      "concurrency": 1,
+      "trial": 2,
+      "rps": 12568.0,
+      "raw": "requests : 5000 ok / 0 fail in 398ms\nrps      : 12568\nlatency  : p50=77\u00b5s p90=92\u00b5s p99=140\u00b5s max=358\u00b5s\n",
+      "rss_after_runs": "12256 kB"
+    },
+    {
+      "server": "go",
+      "concurrency": 1,
+      "trial": 3,
+      "rps": 12254.0,
+      "raw": "requests : 5000 ok / 0 fail in 408ms\nrps      : 12254\nlatency  : p50=79\u00b5s p90=94\u00b5s p99=149\u00b5s max=397\u00b5s\n",
+      "rss_after_runs": "12256 kB"
+    },
+    {
+      "server": "go",
+      "concurrency": 10,
+      "trial": 1,
+      "rps": 27700.0,
+      "raw": "requests : 5000 ok / 0 fail in 181ms\nrps      : 27700\nlatency  : p50=304\u00b5s p90=498\u00b5s p99=1.435ms max=5.799ms\n",
+      "rss_after_runs": "12256 kB"
+    },
+    {
+      "server": "go",
+      "concurrency": 10,
+      "trial": 2,
+      "rps": 25303.0,
+      "raw": "requests : 5000 ok / 0 fail in 198ms\nrps      : 25303\nlatency  : p50=307\u00b5s p90=537\u00b5s p99=3.489ms max=6.355ms\n",
+      "rss_after_runs": "12256 kB"
+    },
+    {
+      "server": "go",
+      "concurrency": 10,
+      "trial": 3,
+      "rps": 25002.0,
+      "raw": "requests : 5000 ok / 0 fail in 200ms\nrps      : 25002\nlatency  : p50=315\u00b5s p90=531\u00b5s p99=4.047ms max=7.837ms\n",
+      "rss_after_runs": "12256 kB"
+    },
+    {
+      "server": "go",
+      "concurrency": 50,
+      "trial": 1,
+      "rps": 34993.0,
+      "raw": "requests : 5000 ok / 0 fail in 143ms\nrps      : 34993\nlatency  : p50=1.331ms p90=2.199ms p99=3.294ms max=6.494ms\n",
+      "rss_after_runs": "12256 kB"
+    },
+    {
+      "server": "go",
+      "concurrency": 50,
+      "trial": 2,
+      "rps": 34933.0,
+      "raw": "requests : 5000 ok / 0 fail in 143ms\nrps      : 34933\nlatency  : p50=1.369ms p90=2.133ms p99=3.156ms max=7.341ms\n",
+      "rss_after_runs": "12256 kB"
+    },
+    {
+      "server": "go",
+      "concurrency": 50,
+      "trial": 3,
+      "rps": 33618.0,
+      "raw": "requests : 5000 ok / 0 fail in 149ms\nrps      : 33618\nlatency  : p50=1.43ms p90=2.236ms p99=4.185ms max=6.059ms\n",
+      "rss_after_runs": "12256 kB"
+    }
+  ],
+  "date_utc": "2026-11-09",
+  "compiler_commit": "2814693f6e86b5c0427d9e7a0a7464eba462c64f",
+  "c_compiler": "GCC 12.2.0",
+  "native_build": "spin pack + make; generated C and runtime compiled -O2",
+  "go_version": "go1.27.3",
+  "dependency_commits": {
+    "spinel-packer": "dc86b6df81afe591461430f3f3d39cfcdd009994",
+    "spnl-utils": "3d9d9577c32285a869c35469604c227c44a477c5",
+    "spnl-web": "6889a4a76c8af674ecfe22e72fa0630bd33eddf7",
+    "spnl-erb": "af85faf17d022555487b89bf57368714d85d033d",
+    "spnl-router": "b624ae04591c9f5d0a25c84b73b525e6a9e794c2",
+    "spnl-schema": "9952d01256b1b77ffa3a660ff4a0f4d9fa8f5433"
+  }
+}

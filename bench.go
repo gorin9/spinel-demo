@@ -15,9 +15,11 @@ func main() {
 	url := flag.String("url", "", "target URL")
 	n := flag.Int("n", 10000, "total requests")
 	c := flag.Int("c", 1, "concurrency")
+	expectedStatus := flag.Int("status", 200, "required HTTP status")
+	expectedBody := flag.String("body", "", "required response body (optional)")
 	keepalive := flag.Bool("keepalive", false, "use HTTP keep-alive (default: fresh TCP each)")
 	flag.Parse()
-	if *url == "" {
+	if *url == "" || *n <= 0 || *c <= 0 {
 		fmt.Fprintln(os.Stderr, "usage: bench -url <url> [-n N] [-c C] [-keepalive]")
 		os.Exit(2)
 	}
@@ -53,8 +55,14 @@ func main() {
 					mu.Unlock()
 					continue
 				}
-				io.Copy(io.Discard, resp.Body)
+				body, readErr := io.ReadAll(resp.Body)
 				resp.Body.Close()
+				if readErr != nil || resp.StatusCode != *expectedStatus || (*expectedBody != "" && string(body) != *expectedBody) {
+					mu.Lock()
+					fails++
+					mu.Unlock()
+					continue
+				}
 				dt := time.Since(t0)
 				mu.Lock()
 				lats = append(lats, dt)
@@ -80,6 +88,9 @@ func main() {
 		pct(0.50).Round(time.Microsecond),
 		pct(0.90).Round(time.Microsecond),
 		pct(0.99).Round(time.Microsecond),
-		lats[len(lats)-1].Round(time.Microsecond),
+		pct(1).Round(time.Microsecond),
 	)
+	if fails > 0 {
+		os.Exit(1)
+	}
 }

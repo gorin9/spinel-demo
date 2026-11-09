@@ -1,0 +1,9 @@
+.git
+.compiler
+build
+vendor
+.bundle
+legacy
+*.sqlite3*
+*.pem
+.env*

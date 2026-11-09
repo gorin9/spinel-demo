@@ -1,3 +1,5 @@
+> Historical May 2026 implementation notes. Current behavior is documented in README; source is archived under legacy/.
+
 # Spinel で簡易 HTTP サーバーを書く
 
 Ruby AOT コンパイラ [matz/spinel](https://github.com/matz/spinel)

@@ -1,0 +1,17 @@
+class User
+  attr_accessor id: Integer
+  attr_accessor email: String
+  attr_accessor name: String
+  def initialize: (Integer, String, String) -> void
+  def self.find: (Integer) -> User?
+  def self.find!: (Integer) -> User
+  def self.all: () -> Array[User]
+  def self.count: () -> Integer
+  def self.create: (String, String) -> User
+  def self.where_email: (String) -> Array[User]
+  def self.find_by_email: (String) -> User?
+  def self.where_name: (String) -> Array[User]
+  def self.find_by_name: (String) -> User?
+  def save: () -> User
+  def destroy: () -> User
+end

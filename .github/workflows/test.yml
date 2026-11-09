@@ -1,0 +1,54 @@
+name: test
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: spinel-demo
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: ['2026.10.25', '60c0273261415d2b5edd6480667a705a68addbd2']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: spinel-demo
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      - run: sudo apt-get update && sudo apt-get install -y build-essential libssl-dev libcrypt-dev libsqlite3-dev pkg-config
+      - run: gem install erb -v 2.2.3 --no-document && gem install rake --no-document && gem install prism -v 1.9.0 --no-document && gem install sqlite3 -v 1.7.3 --no-document
+      - uses: actions/checkout@v4
+        with:
+          repository: matz/spinel
+          ref: ${{ matrix.compiler }}
+          path: .compiler
+      - run: make -C ../.compiler deps && make -C ../.compiler -j2
+      - run: echo "$GITHUB_WORKSPACE/.compiler/bin" >> "$GITHUB_PATH"
+      - run: ruby scripts/bootstrap.rb && ruby scripts/generate.rb
+      - run: git diff --exit-code -- app/models/user.generated.rb app/site_router.generated.rb views/site/ sig/
+      - run: spin fetch && spin vendor
+      - run: SPIN_OFFLINE=1 spin build demo && SPIN_OFFLINE=1 spin test
+      - run: python3 test/network_smoke.py
+      - if: matrix.compiler == '60c0273261415d2b5edd6480667a705a68addbd2'
+        run: spinel $(spin flags) examples/demo_db.rb -o build/bin/demo-db && DEMO_COMMAND=./build/bin/demo-db python3 test/network_smoke.py
+      - run: spin pack demo --out /tmp/pack && make -C /tmp/pack -j2
+      - run: DEMO_COMMAND=/tmp/pack/demo python3 test/network_smoke.py
+  container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t spinel-demo:test .
+      - run: docker run -d --name demo -p 127.0.0.1:18080:8080 spinel-demo:test
+      - run: |
+          for n in $(seq 1 60); do
+            curl --fail http://127.0.0.1:18080/health && exit 0
+            sleep 1
+          done
+          docker logs demo
+          exit 1
+      - if: always()
+        run: docker stop --time 10 demo || true
